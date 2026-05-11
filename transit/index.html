@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>近くの場所を探す</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      text-align: center;
+      margin-top: 0px; /* Reduced top margin for smaller screens */
+      padding: 0px; /* Added some padding for overall content */
+    }
+
+    h1 {
+      font-size: 24px; /* Increased heading font size */
+      margin-bottom: 10px;
+    }
+
+    /* New container for buttons */
+    .button-container {
+      display: flex; /* Enable flexbox */
+      flex-wrap: wrap; /* Allow items to wrap to the next line */
+      justify-content: center; /* Center buttons horizontally */
+      gap: 10px; /* Space between buttons */
+      margin-bottom: 20px; /* Add some space below the buttons */
+    }
+
+    button {
+      font-size: 20px; /* Increased button font size */
+      padding: 6px 6px; /* Increased button padding */
+      border: 2px solid #00bcd4;
+      border-radius: 10px;
+      background-color: transparent;
+      color: #00bcd4;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      /* width: 80%; Removed fixed width to allow flexbox to manage sizing */
+      flex: 1 1 auto; /* Allow buttons to grow and shrink, and take up available space */
+      min-width: 150px; /* Set a minimum width for buttons to prevent them from becoming too small */
+      max-width: 300px; /* Limit button width on larger screens */
+    }
+
+    button:hover {
+      background-color: #00bcd4;
+      color: #121212;
+      box-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4;
+    }
+
+    /* Media queries for even finer control on different screen sizes (optional) */
+    @media (min-width: 768px) {
+      body {
+        margin-top: 50px;
+      }
+      button {
+        width: auto; /* Revert to auto width on larger screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>近くの場所を探す</h1>
+
+  <div class="button-container">
+    <button onclick="searchNearby('飲食店')">飲食店</button>
+    <button onclick="searchNearby('カフェ')">カフェ</button>
+    <button onclick="searchNearby('寿司屋')">寿司屋</button>
+    <button onclick="searchNearby('居酒屋')">酒と肴</button>
+    <button onclick="searchNearby('スーパーマーケット')">スーパー</button>
+    <button onclick="searchNearby('ショッピングモール')">モール</button>
+    <button onclick="searchNearby('物産店、道の駅')">物産店</button>
+    <button onclick="searchNearby('観光地')">観光地</button>
+    <button onclick="searchNearby('神社仏閣')">神社仏閣</button>
+    <button onclick="searchNearby('美術館')">美術館</button>
+    <button onclick="searchNearby('滝')">滝</button>
+    <button onclick="searchNearby('漁港')">漁港</button>
+    <button onclick="searchNearby('ビーチ')">ビーチ</button>
+    <button onclick="searchNearby('鉄道駅')">鉄道駅</button>
+    <button onclick="searchNearby('バス停')">バス停</button>
+  </div>
+
+  <h1>移動</h1>
+
+  <div class="button-container">
+    <button onclick="navigateTrain('川越市、埼玉県')">自宅に帰る</button>
+  </div>
+
+  <h1>業務</h1>
+
+  <div class="button-container">
+    <button onclick="yahooTrain('川越','虎ノ門')">川越 ⇒ 虎ノ門</button>
+    <button onclick="yahooTrain('新宿','川越')">新宿 ⇒ 川越</button>
+  </div>
+
+  <script>
+    function searchNearby(keyword) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          // Corrected the Google Maps URL structure and encoding
+          const query = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('近くの' + keyword)}&query_place_id=&center=${lat},${lng}`;
+          window.location.href = query;
+        }, function(error) {
+          alert("位置情報の取得に失敗しました。ブラウザの設定を確認してください。");
+        });
+      } else {
+        alert("このブラウザでは位置情報が利用できません。");
+      }
+    }
+    function navigateTrain(keyword) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          // Corrected the Google Maps URL structure and encoding
+          const query = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(keyword + 'への経路案内を電車で')}&query_place_id=&center=${lat},${lng}`;
+          window.location.href = query;
+        }, function(error) {
+          alert("位置情報の取得に失敗しました。ブラウザの設定を確認してください。");
+        });
+      } else {
+        alert("このブラウザでは位置情報が利用できません。");
+      }
+    }
+    function yahooTrain(keyword1, keyword2) {
+      const query = `https://transit.yahoo.co.jp/search/result?from=${keyword1}&to=${keyword2}&sort=price&s=1`;
+      window.location.href = query;
+    }
+  </script>
+</body>
+</html>

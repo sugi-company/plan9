@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レクサス音声</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      text-align: center;
+      margin-top: 0px; /* Reduced top margin for smaller screens */
+      padding: 0px; /* Added some padding for overall content */
+    }
+
+    h1 {
+      font-size: 24px; /* Increased heading font size */
+      margin-bottom: 10px;
+    }
+
+    /* New container for general buttons */
+    .button-container {
+      display: flex; /* Enable flexbox */
+      flex-wrap: wrap; /* Allow items to wrap to the next line */
+      justify-content: center; /* Center buttons horizontally */
+      gap: 10px; /* Space between buttons */
+      margin-bottom: 20px; /* Add some space below the buttons */
+    }
+
+    /* Default button styles (applies to all buttons unless overridden) */
+    button {
+      font-size: 20px; /* Increased button font size */
+      padding: 15px 6px; /* 上下のpaddingを増やしてボタンの高さを確保 */
+      border: 2px solid #00bcd4;
+      border-radius: 10px;
+      background-color: transparent;
+      color: #00bcd4;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 150px; /* Set a minimum width for buttons to prevent them from becoming too small */
+      max-width: 300px; /* Limit button width on larger screens */
+      box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    button:hover {
+      background-color: #00bcd4;
+      color: #121212;
+      box-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4;
+    }
+
+    /* Styles for the new input field and its button */
+    .phone-input-container {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column; /* Stack input and button vertically on smaller screens */
+      align-items: center; /* Center items horizontally */
+      gap: 10px; /* Space between input and button */
+    }
+
+    .phone-input-container input {
+      padding: 8px 12px;
+      font-size: 18px;
+      border: 2px solid #00bcd4;
+      border-radius: 5px;
+      background-color: #333; /* Darker background for input */
+      color: #ffffff;
+      width: 80%; /* Adjust width as needed */
+      max-width: 300px; /* Limit max width */
+      box-sizing: border-box; /* Include padding and border in width */
+    }
+
+    /* Target buttons specifically within .input-button-group */
+    .input-button-group button {
+      padding: 8px 12px;
+      font-size: 18px;
+      max-width: 80px; /* Further reduce max-width for these specific buttons */
+      min-width: unset; /* Remove min-width inherited from general button style */
+      width: auto; /* Allow content to dictate width, within max-width */
+      box-sizing: border-box;
+      /* Ensure text does not wrap within the button */
+      white-space: nowrap;
+    }
+
+    /* New style for input-button-group to keep input and its buttons together horizontally */
+    .input-button-group {
+      display: flex;
+      gap: 10px; /* Space between input and buttons */
+      align-items: center; /* Vertically align items */
+      flex-wrap: nowrap; /* PREVENT BUTTONS FROM WRAPPING ONTO A NEW LINE */
+      justify-content: center; /* Center the group horizontally */
+      width: 100%; /* Ensure the group takes full width to participate in flex centering */
+      max-width: fit-content; /* Allow the group to shrink to fit content */
+    }
+
+    /* Media queries for even finer control on different screen sizes (optional) */
+    @media (min-width: 768px) {
+      body {
+        margin-top: 50px;
+      }
+      /* General buttons can still use auto width */
+      .button-container button {
+        width: auto;
+      }
+      .phone-input-container {
+        flex-direction: row; /* Align input and button horizontally on larger screens */
+        justify-content: center; /* Center horizontally */
+      }
+       .phone-input-container input {
+        width: auto; /* Allow input to size naturally */
+        min-width: 200px; /* Ensure it's not too small */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>レクサス音声入力</h1>
+
+  <div class="button-container">
+    <button onclick="voice('自宅に帰る')">自宅に帰る</button>
+    <button onclick="voice('目的地を探す')">目的地を探す</button>
+    <button onclick="voice('住所で探す')">住所で探す</button>
+    <button onclick="voice('電話番号で探す')">電話番号で探す</button>
+    <button onclick="voice('目的地セット')">目的地セット</button>
+    <button onclick="voice('検索')">検索</button>
+    <button onclick="voice('はい')">はい</button>
+    <button onclick="voice('戻る')">戻る</button>
+  </div>
+
+  <div class="phone-input-container">
+    <div class="input-button-group">
+      <input id="addressInput" placeholder="住所入力">
+      <button onclick="speakAddress('addressInput')">発話</button>
+      <button onclick="clearInput('addressInput')">消去</button>
+    </div>
+  </div>
+
+  <div class="phone-input-container">
+    <div class="input-button-group">
+      <input id="addressInput2" placeholder="住所入力">
+      <button onclick="speakAddress('addressInput2')">発話</button>
+      <button onclick="clearInput('addressInput2')">消去</button>
+    </div>
+  </div>
+
+  <div class="phone-input-container">
+    <div class="input-button-group">
+      <input id="addressInput3" placeholder="住所入力">
+      <button onclick="speakAddress('addressInput3')">発話</button>
+      <button onclick="clearInput('addressInput3')">消去</button>
+    </div>
+  </div>
+
+  <div class="phone-input-container">
+    <div class="input-button-group">
+      <input type="tel" id="phoneNumberInput" placeholder="電話番号入力">
+      <button onclick="speakPhoneNumber()">発話</button>
+      <button onclick="clearInput('phoneNumberInput')">消去</button>
+    </div>
+  </div>
+
+  <h1>ひ・2　11</h1>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved address
+      const savedAddress = localStorage.getItem('addressInput');
+      if (savedAddress) {
+        document.getElementById('addressInput').value = savedAddress;
+      }
+      const savedAddress2 = localStorage.getItem('addressInput2');
+      if (savedAddress2) {
+        document.getElementById('addressInput2').value = savedAddress2;
+      }
+      const savedAddress3 = localStorage.getItem('addressInput3');
+      if (savedAddress3) {
+        document.getElementById('addressInput3').value = savedAddress3;
+      }
+
+      // Load saved phone number
+      const savedPhoneNumber = localStorage.getItem('phoneNumberInput');
+      if (savedPhoneNumber) {
+        document.getElementById('phoneNumberInput').value = savedPhoneNumber;
+      }
+
+      // Add event listeners for input changes to save to localStorage
+      document.getElementById('addressInput').addEventListener('input', (event) => {
+        localStorage.setItem('addressInput', event.target.value);
+      });
+      document.getElementById('addressInput2').addEventListener('input', (event) => {
+        localStorage.setItem('addressInput2', event.target.value);
+      });
+      document.getElementById('addressInput3').addEventListener('input', (event) => {
+        localStorage.setItem('addressInput3', event.target.value);
+      });
+
+      document.getElementById('phoneNumberInput').addEventListener('input', (event) => {
+        localStorage.setItem('phoneNumberInput', event.target.value);
+      });
+    });
+
+
+    function voice(keyword, rate = 1.0) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(keyword);
+        utterance.lang = 'ja-JP';
+        utterance.rate = rate;
+        speechSynthesis.speak(utterance);
+      } else {
+        console.log('Speech Synthesis not supported in this browser.');
+      }
+    }
+
+    function speakAddress(elementId) {
+      const addressInput = document.getElementById(elementId);
+      let address = addressInput.value;
+
+      if (address) {
+        address = address.replace('東京都', '東京都、');
+        address = address.replace('北海道', '北海道、');
+        address = address.replace('京都府', '京都府、');
+        address = address.replace('大阪府', '大阪府、');
+        address = address.replace('県', '県、');
+        address = address.replace('市', '市、');
+        address = address.replaceAll('-', '、の、');
+        address = address.replaceAll('0', 'ゼロ');
+        address = address.replaceAll('1', 'いち');
+        address = address.replaceAll('2', 'にい');
+        address = address.replaceAll('3', 'さん');
+        address = address.replaceAll('4', 'よん');
+        address = address.replaceAll('5', 'ごう');
+        address = address.replaceAll('6', 'ろく');
+        address = address.replaceAll('7', 'なな');
+        address = address.replaceAll('8', 'ハチ');
+        address = address.replaceAll('9', 'きゅう');
+        voice(address);
+      } else {
+        console.log('No address entered.');
+        voice('入力されていません');
+      }
+    }
+
+    function speakPhoneNumber() {
+      const phoneNumberInput = document.getElementById('phoneNumberInput');
+      let phoneNumber = phoneNumberInput.value.replace(/\D/g, ''); // Remove all non-digit characters
+      let spokenNumber = '';
+
+      const japaneseDigits = {
+        '0': 'ゼロ',
+        '1': 'いち',
+        '2': 'にい',
+        '3': 'さん',
+        '4': 'よん',
+        '5': 'ごう',
+        '6': 'ろく',
+        '7': 'なな',
+        '8': 'ハチ',
+        '9': 'きゅう'
+      };
+
+      if (phoneNumber) {
+        for (let i = 0; i < phoneNumber.length; i++) {
+          const digit = phoneNumber[i];
+          spokenNumber += japaneseDigits[digit];
+
+          // Add a pause based on the new logic
+          if (i < 6) { // For the first 6 digits (index 0 to 5)
+            if ((i + 1) % 3 === 0 && (i + 1) !== phoneNumber.length) { // Add pause after every 3 digits, but not at the very end
+              spokenNumber += '、';
+            }
+          } else if (i < phoneNumber.length - 1) { // No pauses after the 7th digit (index 6) and beyond, except at the very end
+            // Do not add a pause
+          }
+        }
+        voice(spokenNumber.trim(), 0.8);
+      } else {
+        console.log('No phone number entered.');
+        voice('入力されていません');
+      }
+    }
+
+    // New function to clear input fields
+    function clearInput(elementId) {
+      document.getElementById(elementId).value = '';
+      localStorage.removeItem(elementId); // Also clear from localStorage
+    }
+  </script>
+</body>
+</html>
