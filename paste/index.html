@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>コピペ支援</title>
+  <style>
+    /* 全体のスタイル */
+    body {
+      background-color: #1a1a1a; /* 濃い黒背景 */
+      color: #f0f0f0; /* 白に近い文字色 */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* モダンなフォント */
+      padding: 10px;
+    }
+
+    /* ボタンのスタイル */
+    button {
+      font-size: 20px;
+      padding: 16px 32px;
+      min-width: 100px; /* 幅を広げてモダンに */
+      min-height: 40px;
+      margin: 10px 0;
+      border: 1px solid #444; /* 控えめな枠線 */
+      background-color: #333; /* ボタンの濃いグレー背景 */
+      color: #f0f0f0; /* ボタンの文字色を白に */
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease; /* ホバーとクリックのアニメーション */
+      border-radius: 5px; /* 角を少し丸く */
+      text-align: left; /* テキストを左寄せに */
+    }
+
+    /* ボタンのホバーエフェクト */
+    button:hover {
+      background-color: #555; /* ホバー時に少し明るく */
+      border-color: #777;
+    }
+    
+    /* ボタンのアクティブエフェクト（クリック時） */
+    button:active {
+      transform: translateY(1px); /* 押している感じを出す */
+      background-color: #444;
+    }
+
+    /* 入力フィールドのスタイル (通常は非表示が望ましいが、コピペ機能のために存在) */
+    input[type="text"] {
+      position: absolute; /* 画面外に配置 */
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none; /* クリック不可 */
+    }
+    
+    /* ボタン間のスペース */
+    br {
+      line-height: 10px; /* brによる余分なスペースを調整 */
+    }
+  </style>
+</head>
+<body>
+  <button onclick="copyToClipboard('text101')">a142781@power</button><br>
+  <button onclick="copyToClipboard('text111')">小杉 篤史</button><br>
+  <button onclick="copyToClipboard('text111')">小杉</button>
+  <button onclick="copyToClipboard('text112')">コスギ</button>
+  <button onclick="copyToClipboard('text113')">こすぎ</button><br>
+  <button onclick="copyToClipboard('text120')">篤史</button>
+  <button onclick="copyToClipboard('text121')">アツシ</button>
+  <button onclick="copyToClipboard('text122')">あつし</button><br>
+  <button onclick="copyToClipboard('text130')">3501124</button>
+  <br><br><br><br>
+  
+  <input type="text" id="text101" value="a142781@power">
+  <input type="text" id="text110" value="小杉 篤史">
+  <input type="text" id="text111" value="小杉">
+  <input type="text" id="text112" value="コスギ">
+  <input type="text" id="text113" value="こすぎ">
+  <input type="text" id="text120" value="篤史">
+  <input type="text" id="text121" value="アツシ">
+  <input type="text" id="text122" value="あつし">
+  <input type="text" id="text130" value="3501124">
+  
+  <script>
+    function copyToClipboard(text) {
+      const input = document.getElementById(text);
+      input.select();
+      document.execCommand('copy');
+    }
+  </script>
+</body>
+</html>
